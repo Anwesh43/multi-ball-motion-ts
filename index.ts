@@ -28,3 +28,34 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     }
 }
+
+class DrawingUtil {
+
+    static drawCircle(context : CanvasRenderingContext2D, x : number, y : number, r : number) {
+        context.beginPath()
+        context.arc(x, y, r, 0, 2 * Math.PI)
+        context.fill()
+    }
+
+    static drawMultiBallMotion(context : CanvasRenderingContext2D, scale : number) {
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
+        const r : number = Math.min(w, h) / sizeFactor 
+        context.save()
+        context.translate(w / 2, h / 2)
+        for (let j = 0; j < balls; j++) {
+            DrawingUtil.drawCircle(
+                context,
+                0,
+                -(h / 2 - r) * ScaleUtil.divideScale(sf, 1 + j, parts),
+                r * sf1
+            )
+        }
+        context.restore()
+    }
+
+    static drawMBMNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.fillStyle = colors[i]
+        DrawingUtil.drawMultiBallMotion(context, scale)
+    }
+}
