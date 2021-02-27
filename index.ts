@@ -199,3 +199,25 @@ class MultiBallMotion {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    mbm : MultiBallMotion = new MultiBallMotion()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.mbm.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.mbm.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.mbm.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
